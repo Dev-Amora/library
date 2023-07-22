@@ -1,0 +1,94 @@
+package br.com.amora.biblioteca.janela;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import br.com.amora.biblioteca.dao.ClienteDAO;
+
+public class TelaDeletarCliente extends JFrame implements ActionListener {
+
+    private JTextField idClienteTextField;
+    private JButton deleteButton;
+    private JLabel lblNewLabel;
+    private JButton btnNewButton;
+
+    public TelaDeletarCliente() {
+        super("Deletar Cliente");
+        setTitle("DELETAR");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(400, 250);
+
+        JLabel idClienteLabel = new JLabel("Id Cliente:");
+        idClienteLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+        idClienteLabel.setBounds(10, 59, 87, 40);
+        idClienteTextField = new JTextField();
+        idClienteTextField.setFont(new Font("Arial", Font.PLAIN, 12));
+        idClienteTextField.setHorizontalAlignment(SwingConstants.CENTER);
+        idClienteTextField.setBounds(107, 66,  267, 30);
+        
+        deleteButton = new JButton("DELETAR");
+        deleteButton.setFont(new Font("Arial", Font.BOLD, 14));
+        deleteButton.setBounds(226, 145, 109, 55);
+        deleteButton.addActionListener(this);
+        getContentPane().setLayout(null);
+       
+        getContentPane().add(idClienteLabel);
+        getContentPane().add(idClienteTextField);
+        getContentPane().add(deleteButton);
+        
+        lblNewLabel = new JLabel("Deseja deletar cliente:");
+        lblNewLabel.setFont(new Font("Arial", Font.PLAIN, 20));
+        lblNewLabel.setBounds(81, 11, 213, 21);
+        getContentPane().add(lblNewLabel);
+        
+        btnNewButton = new JButton("CANCELAR");
+        btnNewButton.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		TelaClientes clientes = new TelaClientes();
+                clientes.setVisible(true);
+                clientes.setLocationRelativeTo(null);
+                dispose();
+        	}
+        });
+        btnNewButton.setFont(new Font("Arial", Font.BOLD, 14));
+        btnNewButton.setBounds(40, 145, 109, 55);
+        getContentPane().add(btnNewButton);
+
+        setLocationRelativeTo(null); // Centralize the frame
+        setVisible(true);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == deleteButton) {
+            String idClienteText = idClienteTextField.getText().trim();
+            if (idClienteText.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Digite o Id_Cliente a ser deletado.", "Erro", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            try {
+                int idCliente = Integer.parseInt(idClienteText);
+                deletarCliente(idCliente);
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this, "O Id_Cliente deve ser um número válido.", "Erro", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+
+    // Método para deletar o cliente usando a lógica da classe ClienteDAO
+    private void deletarCliente(int idCliente) {
+        ClienteDAO clienteDAO = new ClienteDAO();
+        clienteDAO.deleteCliente(idCliente);
+        clearFields();
+    }
+
+    private void clearFields() {
+    	idClienteTextField.setText("");
+    }
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(TelaDeletarCliente::new);
+    }
+}
+
