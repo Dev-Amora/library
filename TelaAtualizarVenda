@@ -1,0 +1,158 @@
+package br.com.amora.biblioteca.janela;
+
+import java.awt.Color;
+import java.awt.EventQueue;
+import java.awt.Font;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
+
+import br.com.amora.biblioteca.dao.VendaDAO;
+import br.com.amora.biblioteca.controle.Venda;
+
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+
+public class TelaAtualizarVenda extends JFrame {
+
+	private JPanel contentPane;
+    private JLabel vendedorLabel, idClienteLabel, idLivroLabel, idVendaLabel;
+    private JTextField vendedorField, idClienteField, idLivroField, idVendaField;
+
+	public TelaAtualizarVenda() {
+		setTitle("ATUALIZAR");
+        setResizable(false);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setBounds(50, 50, 685, 374);
+        contentPane = new JPanel();
+        contentPane.setBackground(new Color(128, 128, 128));
+        contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+        setContentPane(contentPane);
+        contentPane.setLayout(null);
+
+        JPanel panel = new JPanel();
+        panel.setBounds(10, 11, 649, 313);
+        contentPane.add(panel);
+        panel.setLayout(null);
+        
+        idVendaLabel= new JLabel("Id Venda:");
+        idVendaLabel.setBounds(10, 48, 163, 40);
+        idVendaLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+        panel.add(idVendaLabel);
+        idVendaField = new JTextField(20);
+        idVendaField.setBounds(183, 55,  456, 30);
+        panel.add(idVendaField);
+
+        vendedorLabel= new JLabel("Nome do vendedor:");
+        vendedorLabel.setBounds(10, 89, 163, 40);
+        vendedorLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+        panel.add(vendedorLabel);
+        vendedorField = new JTextField(20);
+        vendedorField.setBounds(183, 96,  456, 30);
+        panel.add(vendedorField);
+
+        idClienteLabel = new JLabel("Id Cliente:");
+        idClienteLabel.setBounds(10, 130, 163, 40);
+        idClienteLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+        panel.add(idClienteLabel);
+        idClienteField = new JTextField(20);
+        idClienteField.setBounds(183, 137, 456, 30);
+        panel.add(idClienteField);
+
+        idLivroLabel = new JLabel("Id Livro:");
+        idLivroLabel.setBounds(10, 171, 163, 40);
+        idLivroLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+        panel.add( idLivroLabel);
+        idLivroField = new JTextField(20);
+        idLivroField.setBounds(183, 178, 456, 30);
+        panel.add(idLivroField);
+
+        JButton buttonRegistrar = new JButton("ATUALIZAR");
+        buttonRegistrar.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		atualizarVenda();
+        	}
+        });
+        buttonRegistrar.setFont(new Font("Arial", Font.BOLD, 16));
+        buttonRegistrar.setBounds(413, 245, 163, 46);
+        panel.add(buttonRegistrar);
+        
+        JButton btnNewButton = new JButton("CANCELAR");
+        btnNewButton.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		TelaVenda venda = new TelaVenda();
+                venda.setVisible(true);
+                venda.setLocationRelativeTo(null);
+                dispose();
+        	}
+        });
+        btnNewButton.setFont(new Font("Arial", Font.BOLD, 16));
+        btnNewButton.setBounds(103, 245, 132, 46);
+        panel.add(btnNewButton);
+        
+        JLabel lblNewLabel = new JLabel("Atualizar venda registrada:");
+        lblNewLabel.setBounds(169, 7, 261, 24);
+        panel.add(lblNewLabel);
+        lblNewLabel.setFont(new Font("Arial", Font.PLAIN, 20));
+	}
+	
+		private void atualizarVenda() {
+	    	
+	        String nomeVendedor = vendedorField.getText();
+	        
+	        if (nomeVendedor.isEmpty()) {
+	            JOptionPane.showMessageDialog(null, "Todos os campos obrigatórios devem ser preenchidos!", "Campos vazios",
+	                    JOptionPane.WARNING_MESSAGE);
+	            return;
+	        }
+	
+	        int id_Venda, id_Livro,id_Cliente;
+	        try {
+	            id_Venda = (int) Long.parseLong(idVendaField.getText());
+	            id_Livro = (int) Long.parseLong(idLivroField.getText());
+	            id_Cliente = (int) Long.parseLong(idClienteField.getText());
+	        } catch (NumberFormatException e) {
+	            JOptionPane.showMessageDialog(null, "ID do cliente inválido!", "ERRO", JOptionPane.WARNING_MESSAGE);
+	            return;
+	        }
+	
+	        // Create a new Client object and set its attributes
+	        Venda newVenda = new Venda();
+	        newVenda.setNomeVendedor(nomeVendedor);
+	        newVenda.setId_Cliente(id_Cliente);
+	        newVenda.setId_Livro(id_Livro);
+	        newVenda.setId_Venda(id_Venda);
+	
+	        // Save the new client using the DAO
+	        VendaDAO dao = new VendaDAO();
+	        dao.atualizarVenda(newVenda);
+	
+	        // Clear the fields after adding the client
+	        clearFields();
+	    }
+	    		
+	   private void clearFields() {
+	       vendedorField.setText("");
+	       idClienteField.setText("");
+	       idLivroField.setText("");
+	       idVendaField.setText("");
+	   }
+	
+	
+	
+	public static void main(String[] args) {
+	    EventQueue.invokeLater(new Runnable() {
+	        public void run() {
+	            TelaClientes frame = new TelaClientes();
+	            frame.setLocationRelativeTo(null);
+	            frame.setVisible(true);
+	        }
+	    });
+	}
+	}
+
