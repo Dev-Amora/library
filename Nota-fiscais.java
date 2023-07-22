@@ -7,7 +7,8 @@ public class NotaFiscal extends Livro {
     private String nomeCliente;
     private String tipoCliente;
     private String cnpjCpf;
-    
+
+	
 	public int getIdVenda() {
 		return idVenda;
 	}
