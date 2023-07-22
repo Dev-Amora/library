@@ -1,0 +1,123 @@
+create database biblioteca;
+use biblioteca;
+
+create table cliente(
+  Id_Cliente int auto_increment not null,
+  nome varchar(75) not null,
+  email varchar(100) not null,
+  telefone varchar(20) not null,
+  genero varchar(20) not null,
+  tipo varchar(20) not null,
+  cnpj_cpf varchar(14) not null,
+  CEP varchar(11) not null,
+  endereco varchar(100) not null,
+  numero varchar(4) not null,
+  cidade varchar(100) not null,
+  estado varchar(40) NOT NULL,
+  primary key(Id_Cliente)
+);
+INSERT INTO cliente (nome, email, telefone, genero, tipo, cnpj_cpf, CEP, endereco, numero, cidade, estado)
+VALUES
+('Ana Silva', 'ana@email.com', '(11) 99999-1111', 'Feminino', 'Pessoa Física', '123.456.789-00', '01234-567', 'Rua das Flores', '123', 'São Paulo', 'SP'),
+('João Santos', 'joao@email.com', '(21) 98888-2222', 'Masculino', 'Pessoa Física', '987.654.321-00', '12345-678', 'Avenida das Palmeiras', '456', 'Rio de Janeiro', 'RJ'),
+('Maria Oliveira', 'maria@email.com', '(85) 97777-3333', 'Feminino', 'Pessoa Física', '456.789.123-00', '54321-876', 'Travessa das Pedras', '789', 'Fortaleza', 'CE'),
+('Pedro Silva', 'pedro@email.com', '(47) 96666-4444', 'Masculino', 'Pessoa Física', '987.654.321-00', '65432-187', 'Rua dos Pinheiros', '147', 'Joinville', 'SC'),
+('Lara Pereira', 'lara@email.com', '(81) 95555-5555', 'Feminino', 'Pessoa Física', '258.369.147-00', '76543-218', 'Avenida das Praias', '963', 'Recife', 'PE'),
+('Rafael Souza', 'rafael@email.com', '(31) 94444-6666', 'Masculino', 'Pessoa Física', '147.852.369-00', '87654-321', 'Rua dos Morros', '258', 'Belo Horizonte', 'MG'),
+('Camila Rodrigues', 'camila@email.com', '(62) 93333-7777', 'Feminino', 'Pessoa Física', '789.456.123-00', '23456-789', 'Travessa das Torres', '987', 'Goiânia', 'GO'),
+('Lucas Oliveira', 'lucas@email.com', '(51) 92222-9999', 'Masculino', 'Pessoa Física', '369.147.258-00', '87656-123', 'Rua das Montanhas', '321', 'Porto Alegre', 'RS'),
+('Amanda Silva', 'amanda@email.com', '(71) 91111-1111', 'Feminino', 'Pessoa Física', '654.321.987-00', '01234-567', 'Avenida das Flores', '654', 'Salvador', 'BA'),
+('Gustavo Santos', 'gustavo@email.com', '(81) 98888-8888', 'Masculino', 'Pessoa Física', '321.654.987-00', '54321-876', 'Travessa dos Pinheiros', '789', 'Recife', 'PE');
+
+
+create table livro(
+  Id_Livro int auto_increment not null,
+  titulo varchar(100) not null,
+  autor varchar(100) not null,
+  editora varchar(100) not null,
+  genero_literario varchar(40) NOT NULL,
+  idioma  varchar(40) default "Português",
+  valor decimal(5,2) not null,
+  primary key (Id_Livro)
+);
+
+INSERT INTO livro (titulo, autor, editora, genero_literario, idioma, valor)
+VALUES
+    ('Dom Casmurro', 'Machado de Assis', 'Livraria do Globo', 'Romance', 'Português', 42.90),
+    ('Harry Potter e a Pedra Filosofal', 'J.K. Rowling', 'Rocco', 'Fantasia', 'Português', 55.50),
+    ('1984', 'George Orwell', 'Companhia Editora Nacional', 'Ficção Distópica', 'Português', 34.80),
+    ('O Pequeno Príncipe', 'Antoine de Saint-Exupéry', 'Gallimard', 'Infantojuvenil', 'Francês', 25.70),
+    ('A Menina que Roubava Livros', 'Markus Zusak', 'Intrínseca', 'Drama', 'Português', 41.60),
+    ('O Pequeno Príncipe', 'É Assim que Acaba', 'Rocco', 'Romance', 'Português', 31.70),
+    ('A Teia de Charlotte', 'E.B. White', 'Harper & Brothers', 'Infantojuvenil', 'Português', 28.50),
+    ('Memórias Póstumas de Brás Cubas', 'Machado de Assis', 'Garnier', 'Romance', 'Português', 39.20),
+    ('A Revolução dos Bichos', 'George Orwell', 'Companhia Editora Nacional', 'Ficção Distópica', 'Português', 27.90),
+    ('Alice no País das Maravilhas', 'Lewis Carroll', 'Macmillan', 'Fantasia', 'Português', 36.80);
+
+
+CREATE TABLE venda (
+    Id_Venda INT AUTO_INCREMENT NOT NULL primary key,
+    data_venda TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    vendedor VARCHAR(50) NOT NULL,
+    Id_Cliente INT NOT NULL,
+    Id_Livro INT NOT NULL,
+    FOREIGN KEY (Id_Cliente) REFERENCES cliente (Id_Cliente),
+    FOREIGN KEY (Id_Livro) REFERENCES livro (Id_Livro)
+);
+INSERT INTO `biblioteca`.`venda` (`vendedor`, `Id_Cliente`, `Id_Livro`) VALUES ('Paulo', '1', '5');
+INSERT INTO `biblioteca`.`venda` (`vendedor`, `Id_Cliente`, `Id_Livro`) VALUES ('Emanuel', '2', '10');
+INSERT INTO `biblioteca`.`venda` (`vendedor`, `Id_Cliente`, `Id_Livro`) VALUES ('Lorena', '10', '1');
+INSERT INTO `biblioteca`.`venda` (`vendedor`, `Id_Cliente`, `Id_Livro`) VALUES ('Paulo', '5', '2');
+INSERT INTO `biblioteca`.`venda` (`vendedor`, `Id_Cliente`, `Id_Livro`) VALUES ('Emanuel', '3', '3');
+INSERT INTO `biblioteca`.`venda` (`vendedor`, `Id_Cliente`, `Id_Livro`) VALUES ('Lorena', '9', '6');
+INSERT INTO `biblioteca`.`venda` (`vendedor`, `Id_Cliente`, `Id_Livro`) VALUES ('Paulo', '4', '9');
+INSERT INTO `biblioteca`.`venda` (`vendedor`, `Id_Cliente`, `Id_Livro`) VALUES ('Lorena', '6', '4');
+INSERT INTO `biblioteca`.`venda` (`vendedor`, `Id_Cliente`, `Id_Livro`) VALUES ('Paulo', '8', '7');
+INSERT INTO `biblioteca`.`venda` (`vendedor`, `Id_Cliente`, `Id_Livro`) VALUES ('Lorena', '7', '5');
+
+
+use biblioteca;
+CREATE OR REPLACE VIEW nota_fiscais AS
+SELECT 
+    v.Id_Venda, 
+    v.data_venda, 
+    v.vendedor, 
+    c.nome AS nome_cliente, 
+    c.tipo AS tipo_cliente, 
+    c.cnpj_cpf, 
+    l.*
+FROM venda v
+JOIN livro l ON l.Id_Livro = v.Id_Livro
+JOIN cliente c ON c.Id_Cliente = v.Id_Cliente;
+
+use biblioteca;
+
+create table fornecedor(
+id_Fornecedor int auto_increment not null,
+nome varchar(50) not null, 
+tipo varchar(20) not null, 
+cnpj_cpf varchar(20) not null, 
+contato varchar(50) not null, 
+endereco varchar(150) not null,
+produtos_servico varchar(200) not null, 
+prazo_entrega varchar(10) not null,
+primary key(id_Fornecedor)
+);
+INSERT INTO fornecedor (nome, tipo, cnpj_cpf, contato, endereco, produtos_servico, prazo_entrega)
+VALUES
+('Livros Rápidos LTDA', 'Pessoa Jurídica', '12.345.678/0001-90', 'contato@livrosrapidos.com', 'Rua das Letras, 123', 'Romance, Suspense', '15 dias'),
+('Fornecedora dos Livros', 'Pessoa Jurídica', '98.765.432/0001-10', 'contato@fornecedoralivros.com', 'Avenida das Páginas, 456', 'Ficção Científica, Poesia', '20 dias'),
+('Livros Expressos ME', 'Pessoa Jurídica', '65.432.987/0001-50', '(11) 98765-4321', 'Travessa das Palavras, 789', 'Fantasia, Autoajuda', '10 dias'),
+('Fornecedores Literários', 'Pessoa Jurídica', '11.222.333/0001-99', 'contato@fornecedoresliterarios.com', 'Rua dos Autores, 741', 'Mistério, Aventura', '25 dias'),
+('Livros Incríveis S/A', 'Pessoa Jurídica', '44.555.666/0001-11', '(21) 98765-4321', 'Alameda dos Best-sellers, 852', 'História, Biografia', '30 dias');
+
+
+create table acesso(
+id_user int auto_increment not null,
+usuario varchar(15) not null unique,
+senha varchar(15) not null,
+primary key(id_user)
+);
+INSERT INTO `biblioteca`.`acesso` (`usuario`, `senha`) VALUES ('Adm', '1234');
+
+select * from biblioteca.venda;
